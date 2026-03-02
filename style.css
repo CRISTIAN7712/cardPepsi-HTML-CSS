@@ -1,8 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
 
 * {
-  margin: 10;
-  padding-right: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
@@ -47,9 +45,6 @@ body {
 .card .circle::before {
   content: "";
   position: absolute;
-  top: 30;
-  left: 2;
-  right: 2;
   width: 350px;
   height: 350px;
   border-radius: 50%;
@@ -135,4 +130,124 @@ body {
   text-decoration: none;
   font-weight: 600;
   margin-top: 10px;
+}
+
+/* ===== BURBUJAS FLOTANTES - elemento externo a la card ===== */
+
+.bubbles-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* No interfiere con la card ni con clics */
+  overflow: hidden;
+  z-index: 0; /* Debajo de la card */
+}
+
+.bubble {
+  position: absolute;
+  bottom: -80px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.5), rgba(0, 120, 220, 0.15));
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  animation: floatUp var(--duration) ease-in infinite;
+  animation-delay: var(--delay);
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-45vh) translateX(var(--sway)) scale(1.05);
+    opacity: 0.7;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(calc(var(--sway) * 0.5)) scale(0.8);
+    opacity: 0;
+  }
+}
+
+/* Configuración individual de cada burbuja */
+.bubble:nth-child(1)  { left: 5%;  width: 25px; height: 25px; --duration: 7s;  --delay: 0s;    --sway: 30px; }
+.bubble:nth-child(2)  { left: 15%; width: 40px; height: 40px; --duration: 9s;  --delay: 1.5s;  --sway: -40px; }
+.bubble:nth-child(3)  { left: 25%; width: 18px; height: 18px; --duration: 6s;  --delay: 3s;    --sway: 20px; }
+.bubble:nth-child(4)  { left: 38%; width: 55px; height: 55px; --duration: 11s; --delay: 0.5s;  --sway: -50px; }
+.bubble:nth-child(5)  { left: 50%; width: 30px; height: 30px; --duration: 8s;  --delay: 2s;    --sway: 35px; }
+.bubble:nth-child(6)  { left: 62%; width: 20px; height: 20px; --duration: 7.5s;--delay: 4s;    --sway: -25px; }
+.bubble:nth-child(7)  { left: 72%; width: 45px; height: 45px; --duration: 10s; --delay: 1s;    --sway: 45px; }
+.bubble:nth-child(8)  { left: 82%; width: 22px; height: 22px; --duration: 6.5s;--delay: 3.5s;  --sway: -30px; }
+.bubble:nth-child(9)  { left: 90%; width: 35px; height: 35px; --duration: 9.5s;--delay: 0.8s;  --sway: -20px; }
+.bubble:nth-child(10) { left: 45%; width: 15px; height: 15px; --duration: 5.5s;--delay: 2.5s;  --sway: 15px; }
+
+/* Aseguramos que la card quede encima de las burbujas */
+.card {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== TÍTULO ANIMADO - elemento externo en la parte superior ===== */
+.hero-title {
+  position: fixed;
+  bottom: 30px;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 900;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+
+  /* Efecto de texto con gradiente */
+  background: linear-gradient(90deg, #fff 0%, #a8d8ff 30%, #005bbb 50%, #a8d8ff 70%, #fff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  /* Sombra de texto para profundidad */
+  filter: drop-shadow(0 0 18px rgba(0, 120, 220, 0.6));
+
+  animation: titleReveal 1s cubic-bezier(0.22, 1, 0.36, 1) both,
+              shimmer 3s linear 1s infinite;
+}
+
+.hero-title span {
+  display: inline-block;
+  animation: letterBounce 2.5s ease-in-out 1s infinite;
+}
+
+@keyframes titleReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px) scaleX(0.8);
+    letter-spacing: 20px;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scaleX(1);
+    letter-spacing: 4px;
+  }
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+@keyframes letterBounce {
+  0%, 100% { transform: translateY(0);    }
+  50%       { transform: translateY(-6px); }
 }
